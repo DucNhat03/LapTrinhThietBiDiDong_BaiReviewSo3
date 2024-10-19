@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { TextInput } from 'react-native-web';
+import CartScreen from './CartScreen';
 
 export default function Screen2({ navigation }) {
     const allProducts = {
@@ -74,9 +76,14 @@ export default function Screen2({ navigation }) {
     const [selectedCategory, setSelectedCategory] = useState('Smartphone');
     const [selectedTab, setSelectedTab] = useState('bestSales');
     const [seeAll, setSeeAll] = useState(false);
+    const [cart, setCart] = useState([]);
 
     const products = allProducts[selectedCategory][selectedTab];
     const displayedProducts = seeAll ? products : products.slice(0, 4);
+
+    const addToCart = (product) => {
+        setCart([...cart, product]);
+    };
 
     return (
         <View style={styles.container}>
@@ -89,6 +96,14 @@ export default function Screen2({ navigation }) {
                     />
                 </TouchableOpacity>
                 <Text style={styles.headerTitle}>Electronics</Text>
+                <TouchableOpacity style={styles.cartButton} 
+                    onPress={() => navigation.navigate('CartScreen', { cartItems: cart })}>
+                    <Image 
+                        source={require('../assets/Data/carticon.png')}
+                        style={styles.cartIcon}
+                        
+                    />
+                </TouchableOpacity>
                 <Image
                     source={require('../assets/Data/logodog.jpg')}
                     style={styles.avatar}
@@ -96,14 +111,28 @@ export default function Screen2({ navigation }) {
             </View>
 
             <View style={styles.searchContainer}>
-                <View style={styles.searchBox}>
-                    <Icon name="search" size={20} color="gray" />
-                    <Text style={styles.searchText}>Search</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center', width: '90%'}}>
+                    <TextInput style={{width: '90%',  height: 35, paddingLeft: 40,
+                        backgroundColor: '#DCDCDC', borderRadius: 2
+                    }} placeholder='Search'>
+                    </TextInput>
+                    <TouchableOpacity style={{position: 'absolute', left: 10, }}>
+                        <Image 
+                            source={require('../assets/Data/searchicon.png')}
+                            style={{
+                                width: 18,
+                                height: 18,
+                                opacity: 0.7,
+                                resizeMode: 'contain',
+                            }}
+                        />
+                    </TouchableOpacity>
+                    
                 </View>
-                <TouchableOpacity>
+                <TouchableOpacity style={{backgroundColor: '#DCDCDC', width: 35, height: 35, alignItems: 'center', justifyContent: 'center', borderRadius: 2}}>
                     <Image
                         source={require('../assets/Data/filtericon.png')}
-                        style={{width: 24, height: 24, resizeMode: 'contain'}}
+                        style={{width: 24, height: 24, resizeMode: 'contain', }}
                     />
                 </TouchableOpacity>
             </View>
@@ -147,9 +176,18 @@ export default function Screen2({ navigation }) {
                             <Text style={styles.productName}>{product.name}</Text>
                             <Text>⭐⭐⭐⭐</Text>
                         </View>
-                        <Text style={styles.productPrice}>{product.price}</Text>
+                        <View>
+                            <TouchableOpacity onPress={() => addToCart(product)}>
+                                <Image source={require('../assets/Data/addicon.png')}
+                                    style={{ width: 20, height: 20, resizeMode: 'contain', top: -5, right: -15}}
+                                />
+                            </TouchableOpacity>
+                            <Text style={styles.productPrice}>{product.price}</Text>
+                        </View>
+                        
                     </View>
                 ))}
+                
 
                 <TouchableOpacity onPress={() => setSeeAll(!seeAll)}>
                     <Text style={{ color: 'dodgerblue', textAlign: 'center', padding: 10 }}>
@@ -198,22 +236,23 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
         padding: 15,
     },
     headerTitle: {
         fontSize: 20,
         fontWeight: 'bold',
+        paddingLeft: 20
     },
     avatar: {
         width: 40,
         height: 40,
         borderRadius: 20,
-        resizeMode: 'contain'
+        resizeMode: 'contain',
+        marginLeft: 20
+        
     },
     searchContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 15,
         marginBottom: 20,
@@ -229,6 +268,7 @@ const styles = StyleSheet.create({
         marginRight: 10,
     },
     searchText: {
+        fontSize: 16,
         marginLeft: 10,
         color: 'gray',
     },
@@ -319,9 +359,20 @@ const styles = StyleSheet.create({
         height: 25,
         resizeMode: 'contain'
     },
+    cartIcon: {
+        width: 25,
+        height: 25,
+        resizeMode: 'contain',
+    },
+    cartButton: {
+        with: 25,
+        height: 25,
+        marginLeft: '37%'
+    },
     backButton: {
         width: 25,
         height: 25,
+        
     },
     iconNavBar: {
         width: 25,

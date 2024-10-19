@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Image, Alert, TouchableOpacity } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { View, Text, TextInput, StyleSheet, Image, Alert, TouchableOpacity } from 'react-native';
 
 export default function Screen1({ navigation }) {
     const users = [
@@ -13,7 +12,8 @@ export default function Screen1({ navigation }) {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const [focusedInput, setFocusedInput] = useState(null); 
 
     const handleLogin = () => {
         const user = users.find(
@@ -23,21 +23,19 @@ export default function Screen1({ navigation }) {
             Alert.alert("Đăng nhập thành công!");
             navigation.navigate("Screen2");
         } else {
-            setErrorMessage('Thông tin đăng nhập không chính xác!');
+            Alert.alert('Thông tin đăng nhập không chính xác!');
         }
     };
 
     return (
         <View style={styles.container}>
-            {/* Icon back */}
-            <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+            <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('ScreenUser')}>
                 <Image 
                     source={require('../assets/Data/back.png')}
                     style={styles.backIcon}
                 />
             </TouchableOpacity>
 
-            {/* Logo */}
             <Image
                 source={require('../assets/Data/icon.png')}
                 style={styles.logo}
@@ -46,8 +44,13 @@ export default function Screen1({ navigation }) {
             <Text style={styles.title}>Hello Again!</Text>
             <Text style={styles.subtitle}>Login into your account</Text>
 
-            {/* Input Email*/}
-            <View style={styles.inputContainer}>
+            {/* Input Email */}
+            <View
+                style={[
+                    styles.inputContainer,
+                    focusedInput === 'email' && styles.inputFocused,
+                ]}
+            >
                 <Image
                     source={require('../assets/Data/emailicon.png')}
                     style={styles.icon}
@@ -59,11 +62,19 @@ export default function Screen1({ navigation }) {
                     onChangeText={setEmail}
                     keyboardType="email-address"
                     autoCapitalize="none"
+                    onFocus={() => setFocusedInput('email')}
+                    onBlur={() => setFocusedInput(null)}
+                    placeholderTextColor="#999" // Màu của placeholder
                 />
             </View>
 
             {/* Input Password */}
-            <View style={styles.inputContainer}>
+            <View
+                style={[
+                    styles.inputContainer,
+                    focusedInput === 'password' && styles.inputFocused,
+                ]}
+            >
                 <Image
                     source={require('../assets/Data/lock.png')}
                     style={styles.icon}
@@ -72,27 +83,26 @@ export default function Screen1({ navigation }) {
                     style={styles.input}
                     placeholder="Enter your password"
                     value={password}
-                    secureTextEntry={true}
+                    secureTextEntry={!isPasswordVisible}
                     onChangeText={setPassword}
+                    onFocus={() => setFocusedInput('password')}
+                    onBlur={() => setFocusedInput(null)}
+                    placeholderTextColor="#999"
                 />
-                {/* Show password toggle */}
-                <TouchableOpacity onPress={() => setPassword(password === ''? 'password' : '')}>
+                <TouchableOpacity onPress={() => setIsPasswordVisible(!isPasswordVisible)}>
                     <Image
-                        source={require('../assets/Data/hide.png')}
+                        source={isPasswordVisible 
+                            ? require('../assets/Data/show.png') 
+                            : require('../assets/Data/hide.png')}
                         style={styles.icon}
                     />
-                    
                 </TouchableOpacity>
             </View>
-            {/* Forgot password */}
+
             <TouchableOpacity onPress={() => Alert.alert('Forgot Password clicked')} style={styles.forgotPasswordContainer}>
-                <Text style={{ color:'#008B8B'}}>Forgot password?</Text>
+                <Text style={{ color: '#008B8B' }}>Forgot password?</Text>
             </TouchableOpacity>
 
-            {/* Error show */}
-            {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
-
-            {/* Continue button */}
             <TouchableOpacity style={styles.button} onPress={handleLogin}>
                 <Text style={styles.buttonText}>Continue</Text>
             </TouchableOpacity>
@@ -102,20 +112,18 @@ export default function Screen1({ navigation }) {
                     source={require('../assets/Data/minus.png')}
                     style={styles.line}
                 />
-                <Text style={{paddingLeft: 25, paddingRight: 25, opacity: 0.8, fontSize: 16}}>or</Text>
+                <Text style={{ paddingLeft: 25, paddingRight: 25, opacity: 0.8, fontSize: 16 }}>or</Text>
                 <Image
                     source={require('../assets/Data/minus.png')}
                     style={styles.line}
                 />
             </View>
-            
 
             <View style={styles.iconRow}>
                 <Image source={require('../assets/Data/google.png')} style={styles.socialIcon} />
                 <Image source={require('../assets/Data/face.png')} style={styles.socialIcon} />
                 <Image source={require('../assets/Data/apple.png')} style={styles.socialIcon} />
             </View>
-
         </View>
     );
 }
@@ -149,34 +157,33 @@ const styles = StyleSheet.create({
         color: 'gray',
         marginBottom: 30,
         fontWeight: 'bold',
-        opacity: 0.5
+        opacity: 0.5,
     },
     inputContainer: {
         width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
         borderWidth: 1,
         borderColor: '#ccc',
         borderRadius: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
         paddingHorizontal: 10,
         marginBottom: 15,
+        backgroundColor: '#fff',
+    },
+    inputFocused: {
+        borderColor: '#008B8B',
+        borderWidth: 2,
     },
     icon: {
-        marginRight: 10,
-        width: 25,
-        height: 25,
+        width: 30,
+        height: 30,
         resizeMode: 'contain',
+        marginRight: 10,
     },
     input: {
         flex: 1,
         paddingVertical: 10,
         fontSize: 16,
-        opacity: 0.2,
-        fontWeight: '700'
-    },
-    error: {
-        color: 'red',
-        marginBottom: 15,
     },
     button: {
         backgroundColor: '#008B8B',
@@ -191,8 +198,8 @@ const styles = StyleSheet.create({
     },
     forgotPasswordContainer: {
         width: '100%',
-        alignItems: 'flex-end', 
-        marginBottom: 20, 
+        alignItems: 'flex-end',
+        marginBottom: 20,
     },
     iconRow: {
         flexDirection: 'row',
@@ -214,14 +221,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#ccc',
         marginVertical: 20,
         opacity: 0.2,
-        fontWeight: '800'
     },
     lineContainer: {
         width: '100%',
-        flexDirection: 'row', 
-        alignItems: 'center', 
+        flexDirection: 'row',
+        alignItems: 'center',
         justifyContent: 'center',
-        paddingTop: 30
-    }
-
+        paddingTop: 30,
+    },
 });
