@@ -1,33 +1,32 @@
 {
-    "Userss":  [
-            {
-                "email": "ducnhat0910@gmail.com",
-                "password": "ducnhat123",
-                "id": "1"
-            },
-            {
-                "email": "user210@gmail.com",
-                "password": "password2",
-                "id": "2"
-            },
-            {
-                "email": "user310@gmail.com",
-                "password": "password3",
-                "id": "3"
-            },
-            {
-                "email": "user410@gmail.com",
-                "password": "password4",
-                "id": "4"
-            },
-            {
-                "email": "user510@gmail.com",
-                "password": "password5",
-                "id": "5"
-            }
-        ]
-    ,
-    "Smartphone": {
+    "Users": [
+        {
+            "email": "ducnhat0910@gmail.com",
+            "password": "ducnhat123",
+            "id": "1"
+        },
+        {
+            "email": "user210@gmail.com",
+            "password": "password2",
+            "id": "2"
+        },
+        {
+            "email": "user310@gmail.com",
+            "password": "password3",
+            "id": "3"
+        },
+        {
+            "email": "user410@gmail.com",
+            "password": "password4",
+            "id": "4"
+        },
+        {
+            "email": "user510@gmail.com",
+            "password": "password5",
+            "id": "5"
+        }
+    ],
+    "Smartphones": {
         "bestSales": [
             {
                 "name": "Smartphone 1",
@@ -51,7 +50,7 @@
             },
             {
                 "name": "Smartphone 5",
-                "price": "$1099",
+                "price": "$999",
                 "image": "../assets/Data/3.png"
             },
             {
@@ -77,13 +76,13 @@
                 "image": "../assets/Data/2.png"
             },
             {
-                "name": "Smartphone Matched 2",
+                "name": "Smartphone Matched 3",
                 "price": "$999",
                 "image": "../assets/Data/1.png"
             },
             {
-                "name": "Smartphone Matched 2",
-                "price": "$1099",
+                "name": "Smartphone Matched 4",
+                "price": "$999",
                 "image": "../assets/Data/2.png"
             }
         ],
@@ -100,11 +99,11 @@
             }
         ]
     },
-    "Ipad": {
+    "Ipads": {
         "bestSales": [
             {
                 "name": "Ipad 1",
-                "price": "$999",
+                "price": "$1199",
                 "image": "../assets/Data/ipad.png"
             },
             {
@@ -150,17 +149,17 @@
                 "image": "../assets/Data/ipad.png"
             },
             {
-                "name": "Ipad Matched 5 Pro",
+                "name": "Ipad Matched 4 Pro",
                 "price": "$2399",
                 "image": "../assets/Data/ipad.png"
             },
             {
-                "name": "Ipad Matched 7 Pro",
+                "name": "Ipad Matched 5 Pro",
                 "price": "$3599",
                 "image": "../assets/Data/ipad.png"
             },
             {
-                "name": "Ipad Matched 2 Pro",
+                "name": "Ipad Matched 6 Pro",
                 "price": "$2399",
                 "image": "../assets/Data/ipad.png"
             }
@@ -178,7 +177,7 @@
             }
         ]
     },
-    "MacBook": {
+    "MacBooks": {
         "bestSales": [
             {
                 "name": "MacBook 1",

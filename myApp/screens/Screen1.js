@@ -7,7 +7,7 @@ export default function Screen1({ navigation }) {
 
     useEffect(() => {
         axios
-            .get('http://localhost:5000/Userss')
+            .get('http://localhost:5000/Users')
             .then((response) => setUsers(response.data))
             .catch((error) => console.error('Lỗi khi lấy dữ liệu:', error));
     }, []);
