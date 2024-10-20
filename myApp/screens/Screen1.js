@@ -1,37 +1,45 @@
-import React, { useState } from 'react';
+import axios from 'axios';
+import React, { useEffect,useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Image, Alert, TouchableOpacity } from 'react-native';
 
 export default function Screen1({ navigation }) {
-    const users = [
-        { email: "user1@example.com", password: "password1" },
-        { email: "user2@example.com", password: "password2" },
-        { email: "user3@example.com", password: "password3" },
-        { email: "user4@example.com", password: "password4" },
-        { email: "user5@example.com", password: "password5" },
-    ];
+    const [users, setUsers] = useState([]);
 
+    useEffect(() => {
+        axios
+            .get('http://localhost:5000/Userss')
+            .then((response) => setUsers(response.data))
+            .catch((error) => console.error('Lỗi khi lấy dữ liệu:', error));
+    }, []);
+    
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-    const [focusedInput, setFocusedInput] = useState(null); 
-
+    const [focusedInput, setFocusedInput] = useState(null);
+    
     const handleLogin = () => {
+        if (!email || !password) {
+            Alert.alert('Vui lòng nhập đầy đủ thông tin!');
+            return;
+        }
+    
         const user = users.find(
             (user) => user.email === email && user.password === password
         );
+    
         if (user) {
-            Alert.alert("Đăng nhập thành công!");
-            navigation.navigate("Screen2");
+            navigation.navigate('Screen2');
         } else {
             Alert.alert('Thông tin đăng nhập không chính xác!');
         }
     };
+    
 
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('ScreenUser')}>
                 <Image 
-                    source={require('../assets/Data/back.png')}
+                    source={require('../assets/Data/codicon_account.png')}
                     style={styles.backIcon}
                 />
             </TouchableOpacity>
@@ -140,6 +148,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 40,
         left: 20,
+        borderRadius: 20,
     },
     logo: {
         width: '100%',
@@ -211,9 +220,10 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
     },
     backIcon: {
-        width: 25,
-        height: 25,
+        width: 30,
+        height: 30,
         resizeMode: 'contain',
+        borderRadius: 20,
     },
     line: {
         width: '40%',

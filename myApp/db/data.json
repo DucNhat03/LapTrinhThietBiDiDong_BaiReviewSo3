@@ -1,0 +1,224 @@
+{
+    "Userss":  [
+            {
+                "email": "ducnhat0910@gmail.com",
+                "password": "ducnhat123",
+                "id": "1"
+            },
+            {
+                "email": "user210@gmail.com",
+                "password": "password2",
+                "id": "2"
+            },
+            {
+                "email": "user310@gmail.com",
+                "password": "password3",
+                "id": "3"
+            },
+            {
+                "email": "user410@gmail.com",
+                "password": "password4",
+                "id": "4"
+            },
+            {
+                "email": "user510@gmail.com",
+                "password": "password5",
+                "id": "5"
+            }
+        ]
+    ,
+    "Smartphone": {
+        "bestSales": [
+            {
+                "name": "Smartphone 1",
+                "price": "$899",
+                "image": "../assets/Data/1.png"
+            },
+            {
+                "name": "Smartphone 2",
+                "price": "$899",
+                "image": "../assets/Data/2.png"
+            },
+            {
+                "name": "Smartphone 3",
+                "price": "$789",
+                "image": "../assets/Data/3.png"
+            },
+            {
+                "name": "Smartphone 4",
+                "price": "$999",
+                "image": "../assets/Data/4.png"
+            },
+            {
+                "name": "Smartphone 5",
+                "price": "$1099",
+                "image": "../assets/Data/3.png"
+            },
+            {
+                "name": "Smartphone 6",
+                "price": "$899",
+                "image": "../assets/Data/2.png"
+            },
+            {
+                "name": "Smartphone 7",
+                "price": "$599",
+                "image": "../assets/Data/1.png"
+            }
+        ],
+        "bestMatched": [
+            {
+                "name": "Smartphone Matched 1",
+                "price": "$899",
+                "image": "../assets/Data/1.png"
+            },
+            {
+                "name": "Smartphone Matched 2",
+                "price": "$899",
+                "image": "../assets/Data/2.png"
+            },
+            {
+                "name": "Smartphone Matched 2",
+                "price": "$999",
+                "image": "../assets/Data/1.png"
+            },
+            {
+                "name": "Smartphone Matched 2",
+                "price": "$1099",
+                "image": "../assets/Data/2.png"
+            }
+        ],
+        "popular": [
+            {
+                "name": "Smartphone Popular 1",
+                "price": "$899",
+                "image": "../assets/Data/3.png"
+            },
+            {
+                "name": "Smartphone Popular 2",
+                "price": "$899",
+                "image": "../assets/Data/4.png"
+            }
+        ]
+    },
+    "Ipad": {
+        "bestSales": [
+            {
+                "name": "Ipad 1",
+                "price": "$999",
+                "image": "../assets/Data/ipad.png"
+            },
+            {
+                "name": "Ipad 2",
+                "price": "$1199",
+                "image": "../assets/Data/ipad.png"
+            },
+            {
+                "name": "Ipad 3",
+                "price": "$1299",
+                "image": "../assets/Data/ipad.png"
+            },
+            {
+                "name": "Ipad 4",
+                "price": "$1399",
+                "image": "../assets/Data/ipad.png"
+            },
+            {
+                "name": "Ipad 5",
+                "price": "$1499",
+                "image": "../assets/Data/ipad.png"
+            },
+            {
+                "name": "Ipad 6",
+                "price": "$1599",
+                "image": "../assets/Data/ipad.png"
+            }
+        ],
+        "bestMatched": [
+            {
+                "name": "Ipad Matched 1",
+                "price": "$1099",
+                "image": "../assets/Data/ipad.png"
+            },
+            {
+                "name": "Ipad Matched 2",
+                "price": "$1399",
+                "image": "../assets/Data/ipad.png"
+            },
+            {
+                "name": "Ipad Matched 3 Pro",
+                "price": "$1399",
+                "image": "../assets/Data/ipad.png"
+            },
+            {
+                "name": "Ipad Matched 5 Pro",
+                "price": "$2399",
+                "image": "../assets/Data/ipad.png"
+            },
+            {
+                "name": "Ipad Matched 7 Pro",
+                "price": "$3599",
+                "image": "../assets/Data/ipad.png"
+            },
+            {
+                "name": "Ipad Matched 2 Pro",
+                "price": "$2399",
+                "image": "../assets/Data/ipad.png"
+            }
+        ],
+        "popular": [
+            {
+                "name": "Ipad Popular 1",
+                "price": "$1299",
+                "image": "../assets/Data/ipad.png"
+            },
+            {
+                "name": "Ipad Popular 2",
+                "price": "$1599",
+                "image": "../assets/Data/ipad.png"
+            }
+        ]
+    },
+    "MacBook": {
+        "bestSales": [
+            {
+                "name": "MacBook 1",
+                "price": "$1499",
+                "image": "../assets/Data/macbook.png"
+            },
+            {
+                "name": "MacBook 2",
+                "price": "$1799",
+                "image": "../assets/Data/macbook.png"
+            }
+        ],
+        "bestMatched": [
+            {
+                "name": "MacBook Matched 1",
+                "price": "$1599",
+                "image": "../assets/Data/macbook.png"
+            },
+            {
+                "name": "MacBook Matched 2",
+                "price": "$1799",
+                "image": "../assets/Data/macbook.png"
+            },
+            {
+                "name": "MacBook Matched 3",
+                "price": "$1999",
+                "image": "../assets/Data/macbook.png"
+            }
+        ],
+        "popular": [
+            {
+                "name": "MacBook Popular 1",
+                "price": "$1999",
+                "image": "../assets/Data/macbook.png"
+            },
+            {
+                "name": "MacBook Popular 2",
+                "price": "$2999",
+                "image": "../assets/Data/macbook.png"
+            }
+        ]
+    }
+}
