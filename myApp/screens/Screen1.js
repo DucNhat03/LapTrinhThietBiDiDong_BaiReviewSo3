@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Image, Alert, TouchableOpacity } from 'react-native';
 
 export default function Screen1({ navigation }) {
@@ -7,7 +7,7 @@ export default function Screen1({ navigation }) {
 
     useEffect(() => {
         axios
-            .get('http://localhost:5000/Users')
+            .get('https://671236b74eca2acdb5f79eeb.mockapi.io/users')
             .then((response) => setUsers(response.data))
             .catch((error) => console.error('Lỗi khi lấy dữ liệu:', error));
     }, []);

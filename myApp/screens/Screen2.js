@@ -3,64 +3,34 @@ import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, TextInput 
 import axios from 'axios';
 
 export default function Screen2({ navigation }) {
-    const [smartphones, setSmartphones] = useState([]);
-    const [ipads, setIpads] = useState([]);
-    const [macbooks, setMacBooks] = useState([]);
-    const [selectedCategory, setSelectedCategory] = useState('Smartphones');
+    const [products, setProducts] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState('Smartphone');
     const [selectedTab, setSelectedTab] = useState('bestSales');
     const [seeAll, setSeeAll] = useState(false);
     const [cart, setCart] = useState([]);
 
-    // Hàm gọi API cho Smartphones
-    const fetchSmartphones = async () => {
+    // Gọi API để lấy tất cả sản phẩm
+    const fetchProducts = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/Smartphones');
-            setSmartphones(response.data);
+            const response = await axios.get('https://671236b74eca2acdb5f79eeb.mockapi.io/products');
+            setProducts(response.data);
         } catch (error) {
-            console.error('Lỗi khi lấy dữ liệu smartphone:', error);
+            console.error('Lỗi khi lấy dữ liệu sản phẩm:', error);
         }
     };
 
-    // Hàm gọi API cho iPads
-    const fetchIpads = async () => {
-        try {
-            const response = await axios.get('http://localhost:5000/Ipads');
-            setIpads(response.data);
-        } catch (error) {
-            console.error('Lỗi khi lấy dữ liệu iPads:', error);
-        }
-    };
-
-    // Hàm gọi API cho MacBooks
-    const fetchMacBooks = async () => {
-        try {
-            const response = await axios.get('http://localhost:5000/MacBooks');
-            setMacBooks(response.data);
-        } catch (error) {
-            console.error('Lỗi khi lấy dữ liệu MacBooks:', error);
-        }
-    };
-
-    // Gọi API khi component mount
     useEffect(() => {
-        fetchSmartphones();
-        fetchIpads();
-        fetchMacBooks();
+        fetchProducts();
     }, []);
 
-    // Cập nhật cách lấy sản phẩm dựa trên selectedCategory và selectedTab
-    const getProducts = () => {
-        if (selectedCategory === 'Smartphones') {
-            return smartphones[selectedTab] || [];
-        } else if (selectedCategory === 'Ipads') {
-            return ipads[selectedTab] || [];
-        } else {
-            return macbooks[selectedTab] || [];
-        }
+    // Lọc sản phẩm dựa trên loại và loại khuyến mãi
+    const getFilteredProducts = () => {
+        return products.filter(
+            product => product.type === selectedCategory && product.typeSale === selectedTab
+        );
     };
 
-    const products = getProducts();
-    const displayedProducts = seeAll ? products : products.slice(0, 4);
+    const displayedProducts = seeAll ? getFilteredProducts() : getFilteredProducts().slice(0, 4);
 
     const addToCart = (product) => {
         setCart([...cart, product]);
@@ -68,78 +38,69 @@ export default function Screen2({ navigation }) {
 
     return (
         <View style={styles.container}>
+            {/* Header */}
             <View style={styles.header}>
-                <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-                    <Image source={require('../assets/Data/back.png')} style={styles.backIcon} />
+                <TouchableOpacity onPress={() => navigation.goBack()}>
+                    <Image source={require('../assets/Data/back.png')} style={{width: 25, height: 25}} />
                 </TouchableOpacity>
                 <Text style={styles.headerTitle}>Electronics</Text>
-                <TouchableOpacity style={styles.cartButton} 
-                    onPress={() => navigation.navigate('CartScreen', { cartItems: cart })}>
+                <TouchableOpacity onPress={() => navigation.navigate('CartScreen', { cartItems: cart })}>
                     <Image source={require('../assets/Data/carticon.png')} style={styles.cartIcon} />
                 </TouchableOpacity>
                 <Image source={require('../assets/Data/logodog.jpg')} style={styles.avatar} />
             </View>
 
+            {/* Search and Filter */}
             <View style={styles.searchContainer}>
-                <View style={{ flexDirection: 'row', alignItems: 'center', width: '90%' }}>
-                    <TextInput 
-                        style={{ width: '90%', height: 35, paddingLeft: 40, backgroundColor: '#DCDCDC', borderRadius: 2 }} 
-                        placeholder='Search' 
-                    />
-                    <TouchableOpacity style={{ position: 'absolute', left: 10 }}>
-                        <Image source={require('../assets/Data/searchicon.png')} style={{ width: 18, height: 18, opacity: 0.7, resizeMode: 'contain' }} />
-                    </TouchableOpacity>
-                </View>
-                <TouchableOpacity style={{ backgroundColor: '#DCDCDC', width: 35, height: 35, alignItems: 'center', justifyContent: 'center', borderRadius: 2 }}>
-                    <Image source={require('../assets/Data/filtericon.png')} style={{ width: 24, height: 24, resizeMode: 'contain' }} />
+                <TextInput placeholder="Search" style={styles.searchInput} />
+                <TouchableOpacity>
+                    <Image source={require('../assets/Data/filtericon.png')} style={styles.filterIcon} />
                 </TouchableOpacity>
             </View>
 
+            {/* Categories */}
             <ScrollView>
-                <View style={styles.categories}>
-                    <Text style={styles.categoryTitle}>Categories</Text>
-                    <TouchableOpacity>
-                        <Text style={styles.seeAll}>See all</Text>
-                    </TouchableOpacity>
+            <View style={styles.categoryIcons}>
+            {[
+                { name: 'Smartphone', image: require('../assets/Data/smart.png') },
+                { name: 'Ipad', image: require('../assets/Data/ipad.png') },
+                { name: 'MacBook', image: require('../assets/Data/macbook.png') }
+            ].map((category) => (
+                <TouchableOpacity
+                    key={category.name}
+                    onPress={() => setSelectedCategory(category.name)}
+                    style={[
+                        styles.categoryIcon,
+                        selectedCategory === category.name && styles.selectedCategoryIcon
+                    ]}
+                >
+                    <Image source={category.image} style={styles.categoryImage} />
+                </TouchableOpacity>
+            ))}
                 </View>
-
-                <View style={styles.categoryIcons}>
-                    <TouchableOpacity onPress={() => { setSelectedCategory('Smartphones'); setSeeAll(false); }}>
-                        <Image source={require('../assets/Data/smart.png')} style={styles.categoryIcon} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => { setSelectedCategory('Ipads'); setSeeAll(false); }}>
-                        <Image source={require('../assets/Data/ipad.png')} style={styles.categoryIcon} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => { setSelectedCategory('MacBooks'); setSeeAll(false); }}>
-                        <Image source={require('../assets/Data/macbook.png')} style={styles.categoryIcon} />
-                    </TouchableOpacity>
-                </View>
+        
 
                 <View style={styles.tabs}>
-                    <TouchableOpacity onPress={() => { setSelectedTab('bestSales'); setSeeAll(false); }}>
-                        <Text style={selectedTab === 'bestSales' ? styles.tabSelected : styles.tab}>Best Sales</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => { setSelectedTab('bestMatched'); setSeeAll(false); }}>
-                        <Text style={selectedTab === 'bestMatched' ? styles.tabSelected : styles.tab}>Best Matched</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => { setSelectedTab('popular'); setSeeAll(false); }}>
-                        <Text style={selectedTab === 'popular' ? styles.tabSelected : styles.tab}>Popular</Text>
-                    </TouchableOpacity>
+                    {['bestSales', 'bestMatched', 'popular'].map((tab) => (
+                        <TouchableOpacity key={tab} onPress={() => setSelectedTab(tab)}>
+                            <Text style={selectedTab === tab ? styles.tabSelected : styles.tab}>
+                                {tab}
+                            </Text>
+                        </TouchableOpacity>
+                    ))}
                 </View>
 
+                {/* Display Products */}
                 {displayedProducts.map((product, index) => (
                     <View key={index} style={styles.productContainer}>
                         <Image source={{ uri: product.image }} style={styles.productImage} />
                         <View style={styles.productInfo}>
                             <Text style={styles.productName}>{product.name}</Text>
-                            <Text>⭐⭐⭐⭐</Text>
+                            <Text>{product.price}</Text>
                         </View>
-                        <View style={styles.priceContainer}>
-                            <TouchableOpacity onPress={() => addToCart(product)}>
-                                <Image source={require('../assets/Data/addicon.png')} style={styles.addIcon} />
-                            </TouchableOpacity>
-                            <Text style={styles.productPrice}>{product.price}</Text>
-                        </View>
+                        <TouchableOpacity onPress={() => addToCart(product)}>
+                            <Image source={require('../assets/Data/addicon.png')} style={styles.addIcon} />
+                        </TouchableOpacity>
                     </View>
                 ))}
 
@@ -149,22 +110,16 @@ export default function Screen2({ navigation }) {
                     </Text>
                 </TouchableOpacity>
 
-                <Image source={require('../assets/Data/banner.png')} style={styles.banner} />
-            </ScrollView>
 
-            <View style={styles.navBar}>
-                <Image source={require('../assets/Data/homeicon.png')} style={styles.iconNavBar} />
-                <Image source={require('../assets/Data/searchicon.png')} style={styles.iconNavBar} />
-                <View>
-                    <Image source={require('../assets/Data/favourite.png')} style={styles.iconNavBar} />
-                </View>
-                <Image source={require('../assets/Data/chat.png')} style={styles.iconNavBar} />
-                <Image source={require('../assets/Data/usericon.png')} style={styles.iconNavBar} />
-            </View>
+                {/* Banner */}
+                <Image
+                source={require('../assets/Data/banner.png')}
+                style={styles.banner}
+                />
+            </ScrollView>
         </View>
     );
 }
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -173,140 +128,163 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between',
         padding: 15,
+        borderBottomWidth: 1,
+        borderColor: '#f0f0f0',
     },
     headerTitle: {
-        fontSize: 20,
+        fontSize: 22,
         fontWeight: 'bold',
-        paddingLeft: 20
     },
     avatar: {
         width: 40,
         height: 40,
         borderRadius: 20,
-        resizeMode: 'contain',
-        marginLeft: 20
+    },
+    cartIcon: {
+        width: 24,
+        height: 24,
+        marginRight: 10,
     },
     searchContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingHorizontal: 15,
-        marginBottom: 20,
+        padding: 10,
+        marginHorizontal: 15,
+        backgroundColor: '#f5f5f5',
+        borderRadius: 8,
+    },
+    searchInput: {
+        flex: 1,
+        height: 40,
+        paddingHorizontal: 10,
+        backgroundColor: '#fff',
+        borderRadius: 8,
+    },
+    filterIcon: {
+        width: 30,
+        height: 30,
+        tintColor: 'gray',
     },
     categories: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingHorizontal: 15,
-        marginBottom: 10,
+        marginVertical: 10,
     },
     categoryTitle: {
         fontSize: 18,
-        fontWeight: 'bold',
+        fontWeight: '600',
     },
     seeAll: {
+        fontSize: 14,
         color: 'dodgerblue',
     },
     categoryIcons: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        paddingHorizontal: 15,
-
+        justifyContent: 'space-around',
+        marginVertical: 10,
     },
     categoryIcon: {
-        width: 60,
-        height: 60,
-        borderWidth: 1,
-        borderColor: '#B0C4DE',
-        backgroundColor: '#B0C4DE',
-        borderRadius: 5,
+        width: 80,
+        height: 80,
+        borderRadius: 12,
+        backgroundColor: '#f0f0f0',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     tabs: {
         flexDirection: 'row',
         justifyContent: 'space-around',
-        paddingVertical: 15,
-        borderBottomWidth: 1,
-        borderColor: '#eee',
-    },
-    tabSelected: {
-        color: 'dodgerblue',
-        fontWeight: 'bold',
-        backgroundColor: '#ADD8E6',
-        paddingHorizontal: 5,
-        paddingVertical: 3,
-        borderRadius: 5,
+        marginVertical: 15,
     },
     tab: {
+        fontSize: 16,
         color: 'gray',
+    },
+    tabSelected: {
+        fontWeight: 'bold',
+        color: 'dodgerblue',
     },
     productContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         alignItems: 'center',
         padding: 15,
-        borderBottomWidth: 1,
-        borderColor: '#ccc',
+        marginHorizontal: 15,
+        backgroundColor: '#fff',
+        borderRadius: 8,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+        elevation: 1,
+        marginBottom: 10,
     },
     productImage: {
         width: 50,
         height: 50,
+        marginRight: 15,
     },
     productInfo: {
         flex: 1,
-        marginLeft: 10,
     },
     productName: {
         fontWeight: 'bold',
+        fontSize: 16,
     },
     productPrice: {
         fontWeight: 'bold',
-        fontSize: 16,
-    },
-    priceContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
+        fontSize: 18,
+        color: '#333',
     },
     addIcon: {
-        width: 20,
-        height: 20,
+        width: 30,
+        height: 30,
+        tintColor: 'dodgerblue',
+    },
+    navBar: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        paddingVertical: 10,
+        borderTopWidth: 1,
+        borderColor: '#eee',
+    },
+    iconNavBar: {
+        width: 28,
+        height: 28,
+        tintColor: 'dodgerblue',
+    },
+    categoryIcons: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        paddingHorizontal: 15,
+        marginVertical: 10,
+    },
+    categoryIcon: {
+        width: 80,
+        height: 80,
+        borderRadius: 12,
+        backgroundColor: '#f0f0f0',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginHorizontal: 5,
+    },
+    selectedCategoryIcon: {
+        borderWidth: 2,
+        borderColor: 'dodgerblue',
+    },
+    categoryImage: {
+        width: 50,
+        height: 50,
         resizeMode: 'contain',
-        marginRight: 10,
     },
     banner: {
         width: '100%',
         height: 150,
         resizeMode: 'cover',
         marginTop: 20,
+        borderRadius: 10,
     },
-    navBar: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        padding: 15,
-        borderTopWidth: 1,
-        borderColor: '#eee',
-    },
-    backIcon: {
-        width: 25,
-        height: 25,
-        resizeMode: 'contain'
-    },
-    cartIcon: {
-        width: 25,
-        height: 25,
-        resizeMode: 'contain',
-    },
-    cartButton: {
-        width: 25,
-        height: 25,
-        marginLeft: '37%'
-    },
-    backButton: {
-        width: 25,
-        height: 25,
-    },
-    iconNavBar: {
-        width: 25,
-        height: 25,
-        resizeMode: 'contain',
-        tintColor: 'dodgerblue'
-    }
 });
+

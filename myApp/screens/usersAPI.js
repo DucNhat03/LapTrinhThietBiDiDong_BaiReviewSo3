@@ -9,7 +9,7 @@ export default function UsersScreen() {
 
     useEffect(() => {
         axios
-            .get('http://localhost:5000/Users')
+            .get('https://671236b74eca2acdb5f79eeb.mockapi.io/users')
             .then(response => setUsers(response.data))
             .catch(error => console.error('Lỗi khi lấy dữ liệu:', error));
     }, []);
